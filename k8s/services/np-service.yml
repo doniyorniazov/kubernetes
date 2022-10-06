@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: simpleapi
+  namespace: api
+spec:
+  type: NodePort
+  ports:
+    - port: 80 #this  port is the port which belongs to ClusterIP which will be exposed
+      targetPort: 80 #this port should match with the port application is targetting in this case: containerPort: 80.
+      nodePort: 30010
+      protocol: TCP
+  selector:
+    app: simpleapi
