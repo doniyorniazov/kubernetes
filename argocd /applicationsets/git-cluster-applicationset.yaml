@@ -1,16 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: simple-api
+  name: simpleapi
+  namespace: argocd
 spec:
   generators:
-    - clusters:
-        selector:
-          matchLabels:
-            cluster: main
+    - git:
+        repoURL: https://github.com/doniyorniazov/kubernetes
+        revision: master
+        directories:
+          - path: k8s/environments/*
   template:
     metadata:
-      name: "{{cluster}}-api"
+      name: "{{path.basename}}"
     spec:
       project: default
       syncPolicy:
@@ -18,9 +20,9 @@ spec:
           prune: true
           selfHeal: true
       source:
-        repoURL: https://github.com/doniyorniazov/argo-cd
+        repoURL: https://github.com/doniyorniazov/kubernetes
         targetRevision: master
-        path: k8s/staging/dev
+        path: "{{path}}"
       destination:
-        server: "{{url}}"
+        server: cluster-server
         namespace: argocd
