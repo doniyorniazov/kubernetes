@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: simpleapi
+  namespace: api
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
+    appgw.ingress.kubernetes.io/backend-path-prefix: "/api"
+    appgw.ingress.kubernetes.io/backend-hostname: "api.com"
+    appgw.ingress.kubernetes.io/ssl-redirect: "true"
+    appgw.ingress.kubernetes.io/connection-draining-timeout: "360"
+    appgw.ingress.kubernetes.io/cookie-based-affinity: "true"
+    appgw.ingress.kubernetes.io/request-timeout: "360"
+    appgw.ingress.kubernetes.io/backend-protocol: "https"
+spec:
+  tls:
+    - secretName: tls-secret
+      hosts:
+        - api.com
+  rules:
+    - host: api.com
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: simpleapi
+                port:
+                  number: 80
