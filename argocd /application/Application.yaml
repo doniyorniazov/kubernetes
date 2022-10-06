@@ -1,8 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: simple-api
-  namespace: argocd
+  name: simpleapi
 spec:
   project: default
 
@@ -12,12 +11,12 @@ spec:
     path: dev
   destination:
     server: https://kubernetes.default.svc
-    namespace: simple-api
-
+    namespace: argocd
   syncPolicy:
     syncOptions:
       - CreateNamespace=true #automatically create namespace if it os not there
     automated:
       selfHeal: true #don't let manual kubectl apply
       prune: true #deletes deployment if config is removed
+
 # ArgoCD will theck every 3 minutes for the changes in git repo
