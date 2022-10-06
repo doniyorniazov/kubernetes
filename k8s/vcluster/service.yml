@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vcluster-lb
+  namespace: { namespace }
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 443 #this  port is the port which belongs to ClusterIP which will be exposed
+      targetPort: 8443 #this port should match with the port application is targetting in this case: containerPort: 80.
+      protocol: TCP
+  selector:
+    app: vcluster
+    release: apptest

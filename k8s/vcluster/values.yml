@@ -1,0 +1,11 @@
+#syncer:
+#  extraArgs:
+#    - --tls-san=<LoadBalancerServiceIP>
+#for RBAC for nodes | Used by K8s metrics serever
+#sync:
+sync:
+  ingresses:
+    enabled: true
+  nodes:
+    enabled: true
+    syncAllNodes: true
