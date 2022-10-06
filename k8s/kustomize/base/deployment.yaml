@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simpleapi
+spec:
+  selector:
+    matchLabels:
+      app: simpleapi
+  template:
+    metadata:
+      labels:
+        app: simpleapi
+    spec:
+      containers:
+        - name: simpleapi
+          image: hub.docker.com/doniyozov/api:v1
+          ports:
+            - name: http
+              containerPort: 8002
+              protocol: TCP

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simpleapi
+spec:
+  selector:
+    matchLabels:
+      app: simpleapi
+  revisionHistoryLimit: 1
+  #replicas: 2
+  template: #POD Configuration
+    metadata:
+      labels:
+        app: simpleapi
+        service: simpleapi
+    spec:
+      containers:
+        - name: simpleapi
+          image: hub.docker.com/doniyozov/api:v1
