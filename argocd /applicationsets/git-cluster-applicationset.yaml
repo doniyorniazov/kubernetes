@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: simple-api
+spec:
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            cluster: main
+  template:
+    metadata:
+      name: "{{cluster}}-api"
+    spec:
+      project: default
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+      source:
+        repoURL: https://github.com/doniyorniazov/argo-cd
+        targetRevision: master
+        path: k8s/staging/dev
+      destination:
+        server: "{{url}}"
+        namespace: argocd

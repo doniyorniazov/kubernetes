@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: api
+spec:
+  generators:
+    - list:
+        elements:
+          - cluster: dev
+            url: https:dev.com
+          - cluster: qa
+            url: https://qa.com
+          - cluster: prod
+            url: https://prod.com
+  template:
+    metadata:
+      name: "{{cluster}}-api"
+    spec:
+      project: default
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+      source:
+        repoURL: https://github.com/doniyorniazov/argo-cd
+        targetRevision: master
+        path: stating/{{cluster}}
+      destination:
+        server: "{{url}}"
+        namespace: bgd
