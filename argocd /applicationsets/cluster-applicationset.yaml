@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: simple-api
+  name: simpleapi
 spec:
   generators:
     - clusters:
         selector:
           matchLabels:
-            cluster: main
+            cluster: main #label the cluster secret cluster=main
   template:
     metadata:
       name: "{{cluster}}-api"
