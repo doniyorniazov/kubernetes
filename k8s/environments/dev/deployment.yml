@@ -7,7 +7,6 @@ spec:
   selector:
     matchLabels:
       app: simpleapi # has to match .spec.template.metadata.labels
-  serviceName: simpleapi
   template:
     metadata:
       labels:
@@ -15,7 +14,7 @@ spec:
     spec:
       containers:
         - name: simpleapi
-          image: hub.docker.com/doniyozov/api:v1
+          image: doniyozov/api:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80
