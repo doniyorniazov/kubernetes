@@ -8,5 +8,5 @@ metadata:
 stringData:
   type: git
   url: https://github.com/doniyorniazov/kubernetes
-  password: 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
+  password: token
   username: my-username
