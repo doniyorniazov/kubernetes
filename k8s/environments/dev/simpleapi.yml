@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: simpleapi
-          image: hub.docker.com/niazovd/api:v1
+          image: niazovd/api:v1
           imagePullPolicy: Always
           ports:
             - containerPort: 80
