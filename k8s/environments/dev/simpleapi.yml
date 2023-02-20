@@ -94,10 +94,12 @@ spec:
     - host: api.20.219.235.7.nip.io
       http:
         paths:
-          - backend:
+          - pathType: Prefix
+            path: /
+            backend:
               service:
                 name: simpleapi-stable
                 port:
                   number: 80
-            path: /
-            pathType: Prefix
+            
+
