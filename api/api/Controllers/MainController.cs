@@ -12,6 +12,8 @@ public class MainController : ControllerBase
     {
         string? message = Environment.GetEnvironmentVariable("MESSAGE");
 
-        return string.IsNullOrEmpty(message) ? "Version:1. No environment variable specified. Please specify MESSAGE environment variable." : message;
+        message = string.IsNullOrEmpty(message) ? "Version:1. No environment variable specified. Please specify MESSAGE environment variable." : message;
+
+        return $"V1: {message}" ;
     }
 }

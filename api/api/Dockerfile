@@ -1,12 +1,13 @@
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 EXPOSE 8888
-ENV MESSAGE="Hello Dockerfile User"
+ENV MESSAGE="Hello from Dockerfile"
+ENV ASPNETCORE_ENVIRONMENT=Production
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["api.csproj", "api/"]
-RUN dotnet restore "api/api.csproj"
+RUN dotnet restore "api/api.csproj" 
 
 WORKDIR "/src/api"
 COPY . .

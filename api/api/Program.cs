@@ -22,5 +22,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run("http://localhost:8888");
+app.Run();
 
