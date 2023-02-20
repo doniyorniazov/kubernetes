@@ -73,6 +73,8 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  name: simpleapi
+  namespace: api
   annotations:
     kubernetes.io/ingress.class: nginx
     kubernetes.io/ingress.allow-http: "false"
@@ -85,8 +87,6 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "360"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "360"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "360"
-  name: simpleapi
-  namespace: api
 spec:
   rules:
     - host: api.20.219.235.7.nip.io
@@ -94,7 +94,7 @@ spec:
         paths:
           - backend:
               service:
-                name: simpleapi
+                name: simpleapi-stable
                 port:
                   number: 80
             path: /
