@@ -61,5 +61,5 @@ spec:
                 name: simpleapi
                 port:
                   number: 80
-            path: /api
+            path: /
             pathType: Prefix
