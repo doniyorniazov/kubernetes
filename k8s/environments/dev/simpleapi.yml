@@ -14,10 +14,13 @@ spec:
     spec:
       containers:
         - name: simpleapi
-          image: doniyozov/api:v1
+          image: hub.docker.com/niazovd/api:v1
           imagePullPolicy: Always
           ports:
             - containerPort: 80
+          env: 
+            - name: MESSAGE
+              value: "Hello from K8s"   
 ---
 apiVersion: v1
 kind: Service
