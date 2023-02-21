@@ -81,7 +81,6 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     kubernetes.io/ingress.allow-http: "false"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/affinity: "cookie"
     nginx.ingress.kubernetes.io/affinity-mode: persistent
