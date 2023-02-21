@@ -3,6 +3,8 @@ kind: Rollout
 metadata:
   name: simpleapi
   namespace: api
+  labels:
+    app: simpleapi
 spec:
   selector:
     matchLabels:
@@ -15,11 +17,11 @@ spec:
       canaryService: simpleapi-canary
       trafficRouting:
         nginx:
-          stableIngress: "simpleapi-ingress" # required
-          annotationPrefix: customingress.nginx.ingress.kubernetes.io # optional
-          additionalIngressAnnotations: # optional
-            canary-by-header: X-Canary
-            canary-by-header-value: iwantsit
+          stableIngress: simpleapi # required
+        #  annotationPrefix: customingress.nginx.ingress.kubernetes.io # optional
+        #  additionalIngressAnnotations: # optional
+        #    canary-by-header: X-Canary
+        #    canary-by-header-value: iwantsit
       steps:
         - setWeight: 50
         - pause: {}
@@ -30,7 +32,7 @@ spec:
   template:
     metadata:
       labels:
-        app: simpleapi # has to match .spec.selector.matchLabels
+        app: simpleapi # has to match .spec.selector.matchLabels        
     spec:
       containers:
         - name: simpleapi
@@ -74,7 +76,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: simpleapi-ingress
+  name: simpleapi
   namespace: api
   annotations:
     kubernetes.io/ingress.class: nginx
