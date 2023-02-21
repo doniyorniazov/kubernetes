@@ -1,12 +1,13 @@
+# ArgoCD will theck every 3 minutes for the changes in git repo
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: simpleapi
+  name: api
   namespace: argocd
 spec:
-  project: default
+  project: simpleapi
   source:
-    repoURL: https://github.com/doniyorniyozov/kubernetes.git
+    repoURL: https://github.com/doniyorniazov/kubernetes.git
     targetRevision: HEAD
     path: k8s/environments/dev
   destination:
@@ -18,5 +19,9 @@ spec:
     automated:
       selfHeal: true #don't let manual kubectl apply
       prune: true #deletes deployment if config is removed
-
-# ArgoCD will theck every 3 minutes for the changes in git repo
+  retry:
+    limit: 10
+    backoff:
+      duration: 10s
+      factor: 2
+      maxDuration: 3m  
