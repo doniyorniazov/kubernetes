@@ -4,26 +4,11 @@ metadata:
   name: simpleapi
   namespace: api
 spec:
-  replicas: 4
   selector:
     matchLabels:
       app: simpleapi # has to match .spec.template.metadata.labels
-  template:
-    metadata:
-      labels:
-        app: simpleapi # has to match .spec.selector.matchLabels
-    spec:
-      containers:
-        - name: simpleapi
-          image: niazovd/api:v1
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 80
-          env: 
-            - name: MESSAGE
-              value: "Hello from K8s"
-  minReadySeconds: 5  
-  revisionHistoryLimit: 1
+  revisionHistoryLimit: 1    
+  #replicas: 4
   strategy:
     canary:
       stableService: simpleapi-stable
@@ -41,7 +26,21 @@ spec:
         - setWeight: 60
         - pause: { duration: 10 }
         - setWeight: 80
-        - pause: { duration: 10 }
+        - pause: { duration: 10 }      
+  template:
+    metadata:
+      labels:
+        app: simpleapi # has to match .spec.selector.matchLabels
+    spec:
+      containers:
+        - name: simpleapi
+          image: niazovd/api:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env: 
+            - name: MESSAGE
+              value: "Hello from K8s"
 ---
 apiVersion: v1
 kind: Service
