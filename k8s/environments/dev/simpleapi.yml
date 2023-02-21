@@ -15,7 +15,7 @@ spec:
       canaryService: simpleapi-canary
       trafficRouting:
         nginx:
-          stableIngress: simpleapi-ingress # required
+          stableIngress: "simpleapi-ingress" # required
           annotationPrefix: customingress.nginx.ingress.kubernetes.io # optional
           additionalIngressAnnotations: # optional
             canary-by-header: X-Canary
