@@ -96,7 +96,7 @@ spec:
       http:
         paths:
           - pathType: Prefix
-            path: /WeatherForecast
+            path: /
             backend:
               service:
                 name: simpleapi-stable
