@@ -5,7 +5,7 @@ metadata:
   name: api
   namespace: argocd
 spec:
-  project: simpleapi
+  project: default
   source:
     repoURL: https://github.com/doniyorniazov/kubernetes.git
     targetRevision: HEAD
@@ -19,9 +19,3 @@ spec:
     automated:
       selfHeal: true #don't let manual kubectl apply
       prune: true #deletes deployment if config is removed
-  retry:
-    limit: 10
-    backoff:
-      duration: 10s
-      factor: 2
-      maxDuration: 3m  
