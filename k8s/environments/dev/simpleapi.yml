@@ -91,7 +91,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "360"
 spec:
   rules:
-    - host: 20.219.235.7 #api.20.219.235.7.nip.io
+    - host: api.20.219.235.7.nip.io
       http:
         paths:
           - pathType: Prefix
