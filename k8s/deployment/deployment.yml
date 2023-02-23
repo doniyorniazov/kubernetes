@@ -22,4 +22,3 @@ spec:
           env:
             - name: MESSAGE
               value: "Hello From Kubernetes"
---- 

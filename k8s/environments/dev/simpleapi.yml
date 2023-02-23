@@ -42,7 +42,7 @@ spec:
             - containerPort: 80
           env: 
             - name: MESSAGE
-              value: "Hello from K8s"
+              value: "Hello SRP Devcon 2023"
 ---
 apiVersion: v1
 kind: Service
