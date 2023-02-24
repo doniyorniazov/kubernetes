@@ -9,7 +9,7 @@ spec:
   selector:
     matchLabels:
       app: simpleapi # has to match .spec.template.metadata.labels
-  revisionHistoryLimit: 1    
+  revisionHistoryLimit: 1  
   #replicas: 4
   strategy:
     canary:
@@ -86,22 +86,22 @@ spec:
     - port: 80 #This port is the port which belongs to ClusterIP which will be exposed
       targetPort: 80 #This port should match with the port application is targetting in this case: containerPort: 8002.
       protocol: TCP
----
-apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
-metadata:
-  name: gateway
-  namespace: api
-spec:
-  selector:
-    istio: ingressgateway
-  servers:
-    - port:
-        number: 80
-        name: http
-        protocol: HTTP
-      host: 
-        - "api"
+#---
+# apiVersion: networking.istio.io/v1alpha3
+# kind: Gateway
+# metadata:
+#   name: gateway
+#   namespace: api
+# spec:
+#   selector:
+#     istio: ingressgateway
+#   servers:
+#     - port:
+#         number: 80
+#         name: http
+#         protocol: HTTP
+#       host: 
+#         - "api"
 # ---
 # apiVersion: networking.istio.io/v1alpha3
 # kind: VirtualService
