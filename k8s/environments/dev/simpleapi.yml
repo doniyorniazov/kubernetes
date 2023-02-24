@@ -19,7 +19,7 @@ spec:
         managedRoutes:
           - name: version-header
         nginx:
-          stableIngress: simpleapi # required
+          stableIngress: simpleapi-ingress # required
         #  annotationPrefix: customingress.nginx.ingress.kubernetes.io # optional
         #  additionalIngressAnnotations: # optional
         #    canary-by-header: X-Canary
@@ -62,7 +62,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: simpleapi-canary
+  name: simpleapi-canary-service
   namespace: api
 spec:
   type: ClusterIP
@@ -76,7 +76,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: simpleapi-stable
+  name: simpleapi-stable-service
   namespace: api
 spec:
   type: ClusterIP
@@ -87,11 +87,44 @@ spec:
       targetPort: 80 #This port should match with the port application is targetting in this case: containerPort: 8002.
       protocol: TCP
 ---
+apiVersion: networking.k8s.io/v1alpha3
+kind: Gateway
+metadata:
+  name: gateway
+  namespace: api
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      host: 
+        - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata: 
+  name: simpleapi
+  namespace: api
+spec: 
+  hosts:
+    - '*'
+  gateways:
+    - gateway
+  http: 
+    - route:
+      - destination:
+          host: simpleapi-stable-service.api.svc.cluster.local
+          port: 
+            number: 80
+---
 #The Ingress rules, must reside in the namespace where the app that they configure reside in this case it's in back-end
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: simpleapi
+  name: simpleapi-ingress
   namespace: api
   annotations:
     kubernetes.io/ingress.class: nginx
