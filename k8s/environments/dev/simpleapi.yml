@@ -16,8 +16,8 @@ spec:
       stableService: simpleapi-stable
       canaryService: simpleapi-canary
       trafficRouting:
-        managedRoutes:
-          - name: version-header
+#        managedRoutes:
+          #- name: version-header
         nginx:
           stableIngress: simpleapi-ingress # required
         #  annotationPrefix: customingress.nginx.ingress.kubernetes.io # optional
