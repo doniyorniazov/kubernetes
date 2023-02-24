@@ -102,23 +102,23 @@ spec:
         protocol: HTTP
       host: 
         - "api"
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata: 
-  name: simpleapi
-  namespace: api
-spec: 
-  hosts:
-    - 'api'
-  gateways:
-    - gateway
-  http: 
-    - route:
-      - destination:
-          host: simpleapi-stable-service.api.svc.cluster.local
-          port: 
-            number: 80
+# ---
+# apiVersion: networking.istio.io/v1alpha3
+# kind: VirtualService
+# metadata: 
+#   name: simpleapi
+#   namespace: api
+# spec: 
+#   hosts:
+#     - 'api'
+#   gateways:
+#     - gateway
+#   http: 
+#     - route:
+#       - destination:
+#           host: simpleapi-stable-service.api.svc.cluster.local
+#           port: 
+#             number: 80
 ---
 #The Ingress rules, must reside in the namespace where the app that they configure reside in this case it's in back-end
 apiVersion: networking.k8s.io/v1
