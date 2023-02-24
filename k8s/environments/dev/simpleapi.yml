@@ -25,19 +25,19 @@ spec:
         #    canary-by-header: X-Canary
         #    canary-by-header-value: iwantsit
       steps:
-        - setWeight: 20
-        - setHeaderRoute: # enable header based traffic routing where
-            name: "version-header"
-            match:
-            - headerName: version # Custom-Header1=Mozilla
-              headerValue:
-                exact: 1.0.0
-            - headerName: version # or Custom-Header2 has a prefix Mozilla
-              headerValue:
-                prefix: 1.0.0
-            - headerName: version # or Custom-Header3 value match regex: Mozilla(.*)
-              headerValue:
-                regex: 1.0.0(.*)      
+    #    - setWeight: 20
+        #- setHeaderRoute: # enable header based traffic routing where
+        #   name: "version-header"
+        #    match:
+        #    - headerName: version # Custom-Header1=Mozilla
+        #      headerValue:
+        #        exact: 1.0.0
+        ##    - headerName: version # or Custom-Header2 has a prefix Mozilla
+          #    headerValue:
+          #      prefix: 1.0.0
+          #  - headerName: version # or Custom-Header3 value match regex: Mozilla(.*)
+          #    headerValue:
+          #      regex: 1.0.0(.*)      
         - setWeight: 50
         - pause: {}
         - setWeight: 60
