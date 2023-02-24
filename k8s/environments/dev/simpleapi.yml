@@ -13,8 +13,8 @@ spec:
   #replicas: 4
   strategy:
     canary:
-      stableService: simpleapi-stable
-      canaryService: simpleapi-canary
+      stableService: simpleapi-stable-service
+      canaryService: simpleapi-canary-service
       trafficRouting:
 #        managedRoutes:
           #- name: version-header
