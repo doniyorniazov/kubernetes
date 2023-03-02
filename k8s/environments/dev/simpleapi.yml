@@ -9,7 +9,7 @@ spec:
   selector:
     matchLabels:
       app: simpleapi # has to match .spec.template.metadata.labels
-  revisionHistoryLimit: 1  
+  revisionHistoryLimit: 1 
   #replicas: 4
   strategy:
     canary:
@@ -90,54 +90,33 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: helloworld-gateway
+  name: simpleapi-gateway
 spec:
   selector:
     istio: ingressgateway # use istio default controller
   servers:
-  - port:
-      number: 80
-      name: http
-      protocol: HTTP
-    hosts:
-    - "*"
+    - port:
+        number: 80
+        name: simpleapi
+        protocol: HTTP
+      hosts:
+      - 'simpleapi'
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: helloworld
+  name: simpleapi
 spec:
   hosts:
-  - "*"
+    - 'simpleapi'
   gateways:
-  - helloworld-gateway
+    - simple-gateway
   http:
-  - match:
-    - uri:
-        exact: /hello
-    route:
-    - destination:
-        host: helloworld
-        port:
-          number: 5000
-
-# ---
-# apiVersion: networking.istio.io/v1alpha3
-# kind: VirtualService
-# metadata: 
-#   name: simpleapi
-#   namespace: api
-# spec: 
-#   hosts:
-#     - 'api'
-#   gateways:
-#     - gateway
-#   http: 
-#     - route:
-#       - destination:
-#           host: simpleapi-stable-service.api.svc.cluster.local
-#           port: 
-#             number: 80
+    - route:
+        - destination:
+            host: simpleapi.api.svc.cluster.local
+            port:
+              number: 80            
 ---
 #The Ingress rules, must reside in the namespace where the app that they configure reside in this case it's in back-end
 apiVersion: networking.k8s.io/v1
