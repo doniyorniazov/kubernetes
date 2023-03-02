@@ -110,7 +110,7 @@ spec:
   hosts:
     - 'simpleapi'
   gateways:
-    - simple-gateway
+    - simpleapi-gateway
   http:
     - route:
         - destination:
