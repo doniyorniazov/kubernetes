@@ -100,7 +100,7 @@ spec:
         name: simpleapi
         protocol: HTTP
       hosts:
-      - 'simpleapi'
+      - 'simpleapi.api.local.domain'
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
