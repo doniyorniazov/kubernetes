@@ -116,7 +116,7 @@ spec:
   http:
     - route:
         - destination:
-            host: simpleapi.api.svc.cluster.local
+            host: simpleapi-stable-service.api.svc.cluster.local
             port:
               number: 80            
 ---
