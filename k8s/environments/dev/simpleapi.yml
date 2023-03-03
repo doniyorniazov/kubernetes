@@ -1,54 +1,54 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Rollout
-metadata:
-  name: simpleapi
-  namespace: api
-  labels:
-    app: simpleapi
-spec:
-  selector:
-    matchLabels:
-      app: simpleapi # has to match .spec.template.metadata.labels
-  revisionHistoryLimit: 1 
-  #replicas: 4
-  strategy:
-    canary:
-      stableService: simpleapi-stable-service
-      canaryService: simpleapi-canary-service
-      trafficRouting:
-        managedRoutes:
-          - name: set-header-1
-        istio:
-          virtualService:
-            name: simpleapi-vsvc   # required          
-      steps:
-        - setWeight: 20
-        - setHeaderRoute: # enable header based traffic routing where
-            name: "set-header-1"
-            match:
-            - headerName: ApiVersion # Custom-Header1=Mozilla
-              headerValue:
-                exact: 2.0.0 #headerValue- contains exactly one of exact - specify the exact header value, regex - value in a regex format, prefix - the prefix of the value could be provided. Not all traffic routers will support all match types.
-        - setWeight: 50
-        - pause: {}
-        - setWeight: 60
-        - pause: { duration: 10 }
-        - setWeight: 80
-        - pause: { duration: 10 }      
-  template:
-    metadata:
-      labels:
-        app: simpleapi # has to match .spec.selector.matchLabels        
-    spec:
-      containers:
-        - name: simpleapi
-          image: niazovd/api:v2
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 80
-          env: 
-            - name: MESSAGE
-              value: "V:2.0.0 Hello SRP Devcon 2023"
+# apiVersion: argoproj.io/v1alpha1
+# kind: Rollout
+# metadata:
+#   name: simpleapi
+#   namespace: api
+#   labels:
+#     app: simpleapi
+# spec:
+#   selector:
+#     matchLabels:
+#       app: simpleapi # has to match .spec.template.metadata.labels
+#   revisionHistoryLimit: 1 
+#   #replicas: 4
+#   strategy:
+#     canary:
+#       stableService: simpleapi-stable-service
+#       canaryService: simpleapi-canary-service
+#       trafficRouting:
+#         managedRoutes:
+#           - name: set-header-1
+#         istio:
+#           virtualService:
+#             name: simpleapi-vsvc   # required          
+#       steps:
+#         - setWeight: 20
+#         - setHeaderRoute: # enable header based traffic routing where
+#             name: "set-header-1"
+#             match:
+#             - headerName: ApiVersion # Custom-Header1=Mozilla
+#               headerValue:
+#                 exact: 2.0.0 #headerValue- contains exactly one of exact - specify the exact header value, regex - value in a regex format, prefix - the prefix of the value could be provided. Not all traffic routers will support all match types.
+#         - setWeight: 50
+#         - pause: {}
+#         - setWeight: 60
+#         - pause: { duration: 10 }
+#         - setWeight: 80
+#         - pause: { duration: 10 }      
+#   template:
+#     metadata:
+#       labels:
+#         app: simpleapi # has to match .spec.selector.matchLabels        
+#     spec:
+#       containers:
+#         - name: simpleapi
+#           image: niazovd/api:v2
+#           imagePullPolicy: Always
+#           ports:
+#             - containerPort: 80
+#           env: 
+#             - name: MESSAGE
+#               value: "V:2.0.0 Hello SRP Devcon 2023"
 ---
 apiVersion: v1
 kind: Service
