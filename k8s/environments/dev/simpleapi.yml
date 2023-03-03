@@ -113,7 +113,9 @@ spec:
             weight: 100
         - destination:
             host: simpleapi-canary-service.api.svc.cluster.local
-          weight: 0
+            port:
+              number: 80
+            weight: 0
 ---
 #The Ingress rules, must reside in the namespace where the app that they configure reside in this case it's in back-end
 apiVersion: networking.k8s.io/v1
