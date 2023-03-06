@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: gateway
+  namespace: api
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+    - port:
+        number: 80
+        name: simpleapi-dev
+        protocol: HTTP
+      hosts:
+      - 'simpleapi.dev'
+    - port:
+        number: 80
+        name: simpleapi-prod
+        protocol: HTTP
+      hosts:
+        - 'simpleapi.prod'   
