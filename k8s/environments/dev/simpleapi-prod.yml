@@ -40,7 +40,7 @@ spec:
   template:
     metadata:
       labels:
-        app: simpleapi # has to match .spec.selector.matchLabels        
+        app: simpleapi-prod # has to match .spec.selector.matchLabels        
     spec:
       containers:
         - name: simpleapi
