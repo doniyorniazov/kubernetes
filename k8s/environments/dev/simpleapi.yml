@@ -14,21 +14,30 @@ spec:
   strategy:
     canary:
       stableService: simpleapi-stable-service
-      canaryService: simpleapi-canary-service
+      # canaryService: simpleapi-canary-service
       trafficRouting:
-        # managedRoutes:
-        #   - name: set-header-1
-        istio:
-          virtualService:
-            name: simpleapi-vsvc   # required          
+#        managedRoutes:
+          #- name: version-header
+        nginx:
+          stableIngress: simpleapi-ingress # required
+        #  annotationPrefix: customingress.nginx.ingress.kubernetes.io # optional
+        #  additionalIngressAnnotations: # optional
+        #    canary-by-header: X-Canary
+        #    canary-by-header-value: iwantsit
       steps:
-        # - setWeight: 20
-        # - setHeaderRoute: # enable header based traffic routing where
-        #     name: "set-header-1"
-        #     match:
-        #     - headerName: ApiVersion # Custom-Header1=Mozilla
-        #       headerValue:
-        #         exact: 2.0.0 #headerValue- contains exactly one of exact - specify the exact header value, regex - value in a regex format, prefix - the prefix of the value could be provided. Not all traffic routers will support all match types.
+    #    - setWeight: 20
+        #- setHeaderRoute: # enable header based traffic routing where
+        #   name: "version-header"
+        #    match:
+        #    - headerName: version # Custom-Header1=Mozilla
+        #      headerValue:
+        #        exact: 1.0.0
+        ##    - headerName: version # or Custom-Header2 has a prefix Mozilla
+          #    headerValue:
+          #      prefix: 1.0.0
+          #  - headerName: version # or Custom-Header3 value match regex: Mozilla(.*)
+          #    headerValue:
+          #      regex: 1.0.0(.*)      
         - setWeight: 50
         - pause: {}
         - setWeight: 60
@@ -48,7 +57,7 @@ spec:
             - containerPort: 80
           env: 
             - name: MESSAGE
-              value: "V:2.0.0 Hello SRP Devcon 2023"
+              value: "Hello SRP Devcon 2023"
 ---
 apiVersion: v1
 kind: Service
@@ -109,13 +118,7 @@ spec:
         - destination:
             host: simpleapi-stable-service.api.svc.cluster.local
             port:
-              number: 80
-              # weight: 100
-        # - destination:
-        #     host: simpleapi-canary-service.api.svc.cluster.local
-        #     port:
-        #       number: 80
-        #       weight: 0
+              number: 80            
 ---
 #The Ingress rules, must reside in the namespace where the app that they configure reside in this case it's in back-end
 apiVersion: networking.k8s.io/v1
@@ -147,4 +150,3 @@ spec:
                 port:
                   number: 80
             
-
