@@ -14,7 +14,7 @@ spec:
   strategy:
     canary:
       stableService: simpleapi-stable-service
-      # canaryService: simpleapi-canary-service
+      canaryService: simpleapi-canary-service
       trafficRouting:
         # managedRoutes:
         #   - name: set-header-1
