@@ -110,7 +110,7 @@ spec:
             host: simpleapi-stable-service.api.svc.cluster.local
             port:
               number: 80
-              weight: 100
+              # weight: 100
         # - destination:
         #     host: simpleapi-canary-service.api.svc.cluster.local
         #     port:
