@@ -19,7 +19,7 @@ spec:
 # #        managedRoutes:
 #           #- name: version-header
         nginx:
-          stableIngress: simpleapi-ingress # required
+          stableIngress: simpleapi-prod-ingress # required
 #        # istio:
 #        #   virtualService:
 #        #     name: simpleapi-vsvc   # required          
