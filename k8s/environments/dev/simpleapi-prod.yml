@@ -13,8 +13,8 @@ spec:
   #replicas: 4
   strategy:
     canary:
-      stableService: simpleapi-stable-service
-      canaryService: simpleapi-canary-service
+      stableService: simpleapi-prod-stable-service
+      canaryService: simpleapi-prod-canary-service
       trafficRouting:
 # #        managedRoutes:
 #           #- name: version-header
@@ -55,7 +55,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: simpleapi-prod
+  name: simpleapi-prod-stable-service
   namespace: api
 spec:
   type: ClusterIP
@@ -65,6 +65,20 @@ spec:
     - port: 80 #This port is the port which belongs to ClusterIP which will be exposed
       targetPort: 80 #This port should match with the port application is targetting in this case: containerPort: 8002.
       protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simpleapi-prod-canary-service
+  namespace: api
+spec:
+  type: ClusterIP
+  selector:
+    app: simpleapi-prod
+  ports:
+    - port: 80 #This port is the port which belongs to ClusterIP which will be exposed
+      targetPort: 80 #This port should match with the port application is targetting in this case: containerPort: 8002.
+      protocol: TCP      
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
