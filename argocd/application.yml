@@ -16,6 +16,12 @@ spec:
   syncPolicy:
     syncOptions:
       - CreateNamespace=true #automatically create namespace if it os not there
+      - ApplyOutOfSyncOnly=true #istio setting https://argoproj.github.io/argo-rollouts/features/traffic-management/istio/#integrating-with-gitops
     automated:
       selfHeal: true #don't let manual kubectl apply
       prune: true #deletes deployment if config is removed
+  ignoreDifferences: #istio setting https://argoproj.github.io/argo-rollouts/features/traffic-management/istio/#integrating-with-gitops
+  - group: networking.istio.io
+    kind: VirtualService
+    jsonPointers:
+    - /spec/http/0
