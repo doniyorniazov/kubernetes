@@ -20,7 +20,7 @@ spec:
 #           #- name: version-header
         istio:
          virtualService:
-           name: simpleapi-prod-vsvc                  # required
+           name: simpleapi-prod-vsvc                 # required
            routes:
            - primary                                  # optional if there is a single route in VirtualService, required otherwise
       steps:
@@ -60,6 +60,9 @@ spec:
     - 'simpleapi.prod'
   http:
     - name: primary
+      match: 
+        - uri:
+            prefix: /
       route:
         - destination:
             host: simpleapi-prod-stable-service.api.svc.cluster.local
