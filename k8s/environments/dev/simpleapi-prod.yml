@@ -13,30 +13,26 @@ spec:
   #replicas: 4
   strategy:
     canary:
-      stableService: simpleapi-prod-stable-service
-      canaryService: simpleapi-prod-canary-service
+      stableService: simpleapi-prod-stable-service    #required
+      canaryService: simpleapi-prod-canary-service    #required
       trafficRouting:
 # #        managedRoutes:
 #           #- name: version-header
-        # nginx:
-        #   stableIngress: simpleapi-prod-ingress # required
-#        # istio:
-#        #   virtualService:
-#        #     name: simpleapi-vsvc   # required          
+        istio:
+         virtualService:
+           name: simpleapi-prod-vsvc                  # required
+           routes:
+           - primary                                  # optional if there is a single route in VirtualService, required otherwise
       steps:
+      - setWeight: 50
+      - pause: {}
 #         # - setWeight: 20
 #         # - setHeaderRoute: # enable header based traffic routing where
 #         #     name: "set-header-1"
 #         #     match:
 #         #     - headerName: ApiVersion # Custom-Header1=Mozilla
 #         #       headerValue:
-#         #         exact: 2.0.0 #headerValue- contains exactly one of exact - specify the exact header value, regex - value in a regex format, prefix - the prefix of the value could be provided. Not all traffic routers will support all match types.
-        - setWeight: 50
-        - pause: {}
-        - setWeight: 60
-        - pause: { duration: 10 }
-        - setWeight: 80
-        - pause: { duration: 10 }      
+#         #         exact: 2.0.0 #headerValue- contains exactly one of exact - specify the exact header value, regex - value in a regex format, prefix - the prefix of the value could be provided. Not all traffic routers will support all match types. 
   template:
     metadata:
       labels:
@@ -52,6 +48,30 @@ spec:
             - name: MESSAGE
               value: "PROD: Hello SRP Devcon 2023"
 ---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: simpleapi-prod-vsvc
+  namespace: api
+spec:
+  gateways:
+    - gateway
+  hosts:
+    - 'simpleapi.prod'
+  http:
+    - name: primary
+      route:
+        - destination:
+            host: simpleapi-prod-stable-service.api.svc.cluster.local
+            port:
+              number: 80
+            weight: 100
+        - destination:
+            host: simpleapi-prod-canary-service.api.svc.cluster.local
+            port:
+              number: 80
+            weight: 0
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -65,6 +85,7 @@ spec:
     - port: 80 #This port is the port which belongs to ClusterIP which will be exposed
       targetPort: 80 #This port should match with the port application is targetting in this case: containerPort: 8002.
       protocol: TCP
+      name: http
 ---
 apiVersion: v1
 kind: Service
@@ -78,21 +99,5 @@ spec:
   ports:
     - port: 80 #This port is the port which belongs to ClusterIP which will be exposed
       targetPort: 80 #This port should match with the port application is targetting in this case: containerPort: 8002.
-      protocol: TCP      
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: simpleapi-prod-vsvc
-  namespace: api
-spec:
-  hosts:
-    - 'simpleapi.prod'
-  gateways:
-    - gateway
-  http:
-    - route:
-        - destination:
-            host: simpleapi-prod-stable-service.api.svc.cluster.local
-            port:
-              number: 80
+      protocol: TCP    
+      name: http  
