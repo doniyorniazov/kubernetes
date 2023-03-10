@@ -18,8 +18,8 @@ spec:
       trafficRouting:
 # #        managedRoutes:
 #           #- name: version-header
-        nginx:
-          stableIngress: simpleapi-prod-ingress # required
+        # nginx:
+        #   stableIngress: simpleapi-prod-ingress # required
 #        # istio:
 #        #   virtualService:
 #        #     name: simpleapi-vsvc   # required          

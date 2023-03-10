@@ -18,4 +18,4 @@ spec:
         name: simpleapi-prod
         protocol: HTTP
       hosts:
-        - 'simpleapi.prod'   
+        - 'simpleapi.prod' 
