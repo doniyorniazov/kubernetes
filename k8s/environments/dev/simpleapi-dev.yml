@@ -96,35 +96,3 @@ spec:
             host: simpleapi-dev-stable-service.api.svc.cluster.local
             port:
               number: 80
-# ---
-# #The Ingress rules, must reside in the namespace where the app that they configure reside in this case it's in back-end
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: simpleapi-dev-ingress
-#   namespace: api
-#   annotations:
-#     kubernetes.io/ingress.class: nginx
-#     kubernetes.io/ingress.allow-http: "false"
-#     nginx.ingress.kubernetes.io/use-regex: "true"
-#     nginx.ingress.kubernetes.io/affinity: "cookie"
-#     nginx.ingress.kubernetes.io/affinity-mode: persistent
-#     nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
-#     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
-#     nginx.ingress.kubernetes.io/proxy-connect-timeout: "360"
-#     nginx.ingress.kubernetes.io/proxy-send-timeout: "360"
-#     nginx.ingress.kubernetes.io/proxy-read-timeout: "360"
-# spec:
-#   rules:
-#     - host: api.20.219.235.7.nip.io
-#       http:
-#         paths:
-#           - pathType: Prefix
-#             path: /WeatherForecast
-#             backend:
-#               service:
-#                 name: simpleapi-dev-stable-service
-#                 port:
-#                   number: 80
-            
-
