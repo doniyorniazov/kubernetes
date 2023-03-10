@@ -57,7 +57,7 @@ spec:
   gateways:
     - gateway
   hosts:
-    - 'simpleapi.prod'
+    - istio-rollout.dev.argoproj.io
   http:
     - name: primary
       match: 
