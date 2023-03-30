@@ -56,18 +56,14 @@ spec:
   hosts:
     - istio-rollout.dev.argoproj.io
   http:
-  - name: primary
+  - name: primary        # referenced in canary.trafficRouting.istio.virtualService.routes
     route:
-      - destination:
-          host: simpleapi-prod-stable-service 
-          port:
-            number: 80
-          weight: 100
-      - destination:
-          host: simpleapi-prod-canary-service 
-          port:
-            number: 80
-          weight: 0
+    - destination:
+        host: simpleapi-prod-stable-service # referenced in canary.stableService
+      weight: 100
+    - destination:
+        host: simpleapi-prod-canary-service # referenced in canary.canaryService
+      weight: 0
 ---
 apiVersion: v1
 kind: Service
