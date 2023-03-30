@@ -5,4 +5,4 @@ services:
     image: ${DOCKER_REGISTRY-}api
     build:
       context: .
-      dockerfile: api/Dockerfile
+      dockerfile: Dockerfile
