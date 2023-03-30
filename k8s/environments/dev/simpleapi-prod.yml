@@ -20,12 +20,11 @@ spec:
 #           #- name: version-header
         istio:
          virtualService:
-           name: rollout-vsvc                         # required
-           routes:
-           - primary                                  # optional if there is a single route in VirtualService, required otherwise
+           name: rollout-vsvc                         # required                              # optional if there is a single route in VirtualService, required otherwise
       steps:
       - setWeight: 50
-      - pause: {}
+      - pause:
+          duration: 10m
 #         # - setWeight: 20
 #         # - setHeaderRoute: # enable header based traffic routing where
 #         #     name: "set-header-1"
@@ -59,8 +58,7 @@ spec:
   hosts:
     - istio-rollout.dev.argoproj.io
   http:
-    - name: primary
-      match: 
+    - match: 
         - uri:
             prefix: /
       route:
