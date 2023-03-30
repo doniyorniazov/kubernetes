@@ -43,7 +43,7 @@ spec:
             - containerPort: 80
           env: 
             - name: MESSAGE
-              value: "PROD: Hello SRP Devcon 2023"
+              value: "NEWPROD: Hello SRP Devcon 2023"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -54,7 +54,7 @@ spec:
   gateways:
     - gateway
   hosts:
-    - istio-rollout.dev.argoproj.io
+    - simpleapi-dev
   http:
   - name: primary        # referenced in canary.trafficRouting.istio.virtualService.routes
     route:
