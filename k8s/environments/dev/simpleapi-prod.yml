@@ -54,7 +54,7 @@ spec:
   gateways:
     - gateway
   hosts:
-    - simpleapi-dev
+    - simpleapi.dev
   http:
   - name: primary        # referenced in canary.trafficRouting.istio.virtualService.routes
     route:
