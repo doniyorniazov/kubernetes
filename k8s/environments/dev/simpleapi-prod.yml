@@ -42,7 +42,7 @@ spec:
             - containerPort: 80
           env: 
             - name: MESSAGE
-              value: "V3:Thread Sleep 5 Second"
+              value: "NEW Thread Sleep 5 Second"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
