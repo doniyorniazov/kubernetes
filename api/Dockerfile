@@ -4,7 +4,7 @@ EXPOSE 8888
 ENV MESSAGE="Hello from Dockerfile"
 ENV ASPNETCORE_ENVIRONMENT=Production
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["api.csproj", "api/"]
 RUN dotnet restore "api/api.csproj" 
