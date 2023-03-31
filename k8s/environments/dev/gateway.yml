@@ -12,10 +12,10 @@ spec:
         name: simpleapi-dev
         protocol: HTTP
       hosts:
-      - 'simpleapi.dev'
-    - port:
-        number: 80
-        name: simpleapi-prod
-        protocol: HTTP
-      hosts:
-        - 'simpleapi.prod' 
+      - '*'
+#    - port:
+#        number: 80
+#        name: simpleapi-prod
+#        protocol: HTTP
+#      hosts:
+#        - 'simpleapi.prod' 

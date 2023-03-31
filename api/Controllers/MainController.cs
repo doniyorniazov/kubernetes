@@ -13,7 +13,8 @@ public class MainController : ControllerBase
         string? message = Environment.GetEnvironmentVariable("MESSAGE");
 
         message = string.IsNullOrEmpty(message) ? "Version:1. No environment variable specified. Please specify MESSAGE environment variable." : message;
+        Thread.Sleep(5000);
 
-        return $"V2: {message}" ;
+        return $"V2: {message}";
     }
 }
