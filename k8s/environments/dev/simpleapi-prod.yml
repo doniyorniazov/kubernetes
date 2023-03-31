@@ -43,7 +43,7 @@ spec:
             - containerPort: 80
           env: 
             - name: MESSAGE
-              value: "NEWPROD: Hello SRP Devcon 2023"
+              value: "PROD: Hello SRP Devcon 2023"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
