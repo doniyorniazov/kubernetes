@@ -11,29 +11,30 @@ jobs:
       IMG_NAME: niazovd/api
 
     steps:
-    - uses: actions/checkout@v3    
 
-    - name: Docker metadata
-      id: metadata
-      uses: docker/metadata-action@v3
+    - name: Checkout
+      uses: actions/checkout@v3
       with:
-        images: ${{ env.IMG_NAME }}
-        tags: |
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-          type=raw,value={{sha}},enable=${{ github.ref_type != 'tag' }}
+        fetch-depth: 0 # required for github-action-get-previous-tag
+
+    - name: Get Previous tag
+      id: previoustag
+      uses: 'WyriHaximus/github-action-get-previous-tag@v1'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Get next version
+      id: next
+      uses: 'WyriHaximus/github-action-next-release-version@1.0.0'
+      with:
+        version: ${{ steps.previoustag.outputs.tag }}        
           
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
       with:
         context: ./api
-        push: ${{ 
-          github.event.base_ref =='refs/heads/main' && 
-          github.ref_type == 'tag' && 
-          !startsWith(github.ref, 'refs/tags/v0.') }}
+        push: ${{ env.IMG_NAME }}
         tags: |
-          ${{ steps.metadata.outputs.tags }}
+          ${{ steps.next.outputs.version }} 
           latest
-        labels: ${{ steps.metadata.outputs.labels }}  
-
-
+        labels: ${{ steps.metadata.outputs.labels }}
