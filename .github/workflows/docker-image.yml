@@ -21,7 +21,7 @@ jobs:
       id: previoustag
       uses: 'WyriHaximus/github-action-get-previous-tag@v1'
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
 
     - name: Get next version
       id: next
