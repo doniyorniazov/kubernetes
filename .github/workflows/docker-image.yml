@@ -42,4 +42,4 @@ jobs:
         tags: |
           '${{ github.event.inputs.docker-tag }}'
           latest
-        labels: ${{ steps.metadata.outputs.labels }}
+        labels: '${{ github.event.inputs.docker-tag }}'
