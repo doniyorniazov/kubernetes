@@ -2,6 +2,11 @@ name: Docker Image CI
 
 on:
   workflow_dispatch:
+    inputs:
+      docker-tag:
+        description: 'Docker image tag'
+        required: true
+        default: '1.0.0'
   
 jobs:
   build:
@@ -35,6 +40,6 @@ jobs:
         context: ./api
         push: ${{ env.IMG_NAME }}
         tags: |
-          ${{ steps.next.outputs.version }} 
+          '${{ github.event.inputs.docker-tag }}'
           latest
         labels: ${{ steps.metadata.outputs.labels }}
