@@ -17,7 +17,7 @@ spec:
       canaryService: simpleapi-prod-canary-service    #required
       trafficRouting:
         managedRoutes: 
-          - name: "version-header"
+          - name: set-header-1
         istio:
          virtualService:
            name: rollout-vsvc
@@ -26,14 +26,14 @@ spec:
       steps:
       - setWeight: 50
       - setHeaderRoute:
-          name: "version-header"
+          name: "set-header-1"
           match:
-            - headerName: "Custom-Header"
+            - headerName: Custom-Header1
               headerValue:
-                prefix: "v2"
+                prefix: v2
       - pause: {}
       - setHeaderRoute: 
-          name: "version-header"
+          name: "set-header-1"
   template:
     metadata:
       labels:
