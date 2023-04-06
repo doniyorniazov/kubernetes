@@ -30,7 +30,7 @@ spec:
           match:
             - headerName: version
               headerValue:
-                exact: "v1"
+                exact: "v2"
       - pause: {}
       - setHeaderRoute: 
           name: "version-header"
@@ -54,9 +54,9 @@ spec:
             - containerPort: 80
           env: 
             - name: MESSAGE
-              value: "v1: Hello from Kubernetes Environment!"
+              value: "v2: Hello from Kubernetes Environment!"
             - name: SLEEP
-              value: "1000"              
+              value: "0"              
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
