@@ -34,13 +34,6 @@ spec:
       - pause: {}
       - setHeaderRoute: 
           name: "version-header"
-#         # - setWeight: 20
-#         # - setHeaderRoute: # enable header based traffic routing where
-#         #     name: "set-header-1"
-#         #     match:
-#         #     - headerName: ApiVersion # Custom-Header1=Mozilla
-#         #       headerValue:
-#         #         exact: 2.0.0 #headerValue- contains exactly one of exact - specify the exact header value, regex - value in a regex format, prefix - the prefix of the value could be provided. Not all traffic routers will support all match types. 
   template:
     metadata:
       labels:
