@@ -77,7 +77,7 @@ spec:
     app: simpleapi-prod
   ports:
     - port: 80 #This port is the port which belongs to ClusterIP which will be exposed
-      targetPort: http
+      targetPort: 80
       protocol: TCP
       name: http
 ---
@@ -92,6 +92,6 @@ spec:
     app: simpleapi-prod
   ports:
     - port: 80 #This port is the port which belongs to ClusterIP which will be exposed
-      targetPort: http
+      targetPort: 80
       protocol: TCP    
       name: http  
