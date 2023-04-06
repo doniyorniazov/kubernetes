@@ -22,7 +22,7 @@ spec:
          virtualService:
            name: rollout-vsvc
            routes:
-           - primary                        # required                              # optional if there is a single route in VirtualService, required otherwise
+           - primary                                 # optional if there is a single route in VirtualService, required otherwise
       steps:
       - setWeight: 50
       - setHeaderRoute:
@@ -47,7 +47,7 @@ spec:
             - containerPort: 80
           env: 
             - name: MESSAGE
-              value: "v2: Hello from Kubernetes Environment!"
+              value: "v3: Canary Test!"
             - name: SLEEP
               value: "0"              
 ---
