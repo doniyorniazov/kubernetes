@@ -62,7 +62,12 @@ spec:
   hosts:
     - "*"
   http:
-  - name: primary        # referenced in canary.trafficRouting.istio.virtualService.routes
+  - name: primary 
+    match:
+      - uri:
+          prefix: /
+        ignoreUriCase: true # Case-Insensitive          
+               # referenced in canary.trafficRouting.istio.virtualService.routes
     route:
     - destination:
         host: simpleapi-prod-stable-service # referenced in canary.stableService
