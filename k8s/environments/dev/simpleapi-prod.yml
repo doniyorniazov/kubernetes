@@ -47,7 +47,7 @@ spec:
             - containerPort: 80
           env: 
             - name: MESSAGE
-              value: "v3: Canary Test!"
+              value: "v4: NEW Canary Test!"
             - name: SLEEP
               value: "0"              
 ---
