@@ -16,6 +16,8 @@ spec:
       stableService: simpleapi-prod-stable-service    #required
       canaryService: simpleapi-prod-canary-service    #required
       trafficRouting:
+        managedRoutes: 
+          - name: "version-header"
         istio:
          virtualService:
            name: rollout-vsvc
@@ -23,7 +25,15 @@ spec:
            - primary                        # required                              # optional if there is a single route in VirtualService, required otherwise
       steps:
       - setWeight: 50
+      - setHeaderRoute:
+          name: "version-header"
+          match:
+            - headerName: version
+              headerValue:
+                exact: "v1"
       - pause: {}
+      - setHeaderRoute: 
+          name: "version-header"
 #         # - setWeight: 20
 #         # - setHeaderRoute: # enable header based traffic routing where
 #         #     name: "set-header-1"
@@ -44,7 +54,7 @@ spec:
             - containerPort: 80
           env: 
             - name: MESSAGE
-              value: "Hello from Kubernetes Environment!"
+              value: "v1: Hello from Kubernetes Environment!"
             - name: SLEEP
               value: "1000"              
 ---
