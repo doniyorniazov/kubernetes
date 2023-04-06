@@ -28,9 +28,9 @@ spec:
       - setHeaderRoute:
           name: "version-header"
           match:
-            - headerName: version
+            - headerName: "Custom-Header"
               headerValue:
-                exact: "v2"
+                prefix: "v2"
       - pause: {}
       - setHeaderRoute: 
           name: "version-header"
