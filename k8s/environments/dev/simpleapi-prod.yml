@@ -38,13 +38,15 @@ spec:
     spec:
       containers:
         - name: simpleapi
-          image: niazovd/api:v3
+          image: niazovd/api:v4
           imagePullPolicy: Always
           ports:
             - containerPort: 80
           env: 
             - name: MESSAGE
               value: "Hello from Kubernetes Environment!"
+            - name: SLEEP
+              value: "1000"              
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
