@@ -18,7 +18,9 @@ spec:
       trafficRouting:
         istio:
          virtualService:
-           name: rollout-vsvc                         # required                              # optional if there is a single route in VirtualService, required otherwise
+           name: rollout-vsvc
+           routes:
+           - primary                        # required                              # optional if there is a single route in VirtualService, required otherwise
       steps:
       - setWeight: 50
       - pause: {}
