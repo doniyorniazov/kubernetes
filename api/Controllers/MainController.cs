@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace api.Controllers;
 
@@ -11,10 +12,12 @@ public class MainController : ControllerBase
     public string Get()
     {
         string? message = Environment.GetEnvironmentVariable("MESSAGE");
+        string? sleepEnv = Environment.GetEnvironmentVariable("SLEEP");
+        int sleepValue = string.IsNullOrWhiteSpace(sleepEnv) ? 0 : Int32.Parse(sleepEnv);
 
         message = string.IsNullOrEmpty(message) ? "Version:1. No environment variable specified. Please specify MESSAGE environment variable." : message;
-        Thread.Sleep(5000);
+        Thread.Sleep(sleepValue);
 
-        return $"V2: {message}";
+        return $"{message + $" Sleep Value: {sleepValue}"}";
     }
 }
