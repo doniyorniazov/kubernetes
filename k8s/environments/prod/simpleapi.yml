@@ -1,98 +1,107 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: simpleapi-dev
+  name: simpleapi-prod
   namespace: api
   labels:
-    app: simpleapi-dev
+    app: simpleapi-prod
 spec:
   selector:
     matchLabels:
-      app: simpleapi-dev # has to match .spec.template.metadata.labels
+      app: simpleapi-prod # has to match .spec.template.metadata.labels
   revisionHistoryLimit: 1 
   #replicas: 4
   strategy:
     canary:
-      stableService: simpleapi-dev-stable-service
-      canaryService: simpleapi-dev-canary-service
+      stableService: simpleapi-prod-stable-service    #required
+      canaryService: simpleapi-prod-canary-service    #required
       trafficRouting:
-# #        managedRoutes:
-#           #- name: version-header
-#         nginx:
-#           stableIngress: simpleapi-ingress # required
-#        # istio:
-#        #   virtualService:
-#        #     name: simpleapi-vsvc   # required          
+        managedRoutes: 
+          - name: set-header-1
+        istio:
+         virtualService:
+           name: rollout-vsvc
+           routes:
+           - primary                                 # optional if there is a single route in VirtualService, required otherwise
       steps:
-#         # - setWeight: 20
-#         # - setHeaderRoute: # enable header based traffic routing where
-#         #     name: "set-header-1"
-#         #     match:
-#         #     - headerName: ApiVersion # Custom-Header1=Mozilla
-#         #       headerValue:
-#         #         exact: 2.0.0 #headerValue- contains exactly one of exact - specify the exact header value, regex - value in a regex format, prefix - the prefix of the value could be provided. Not all traffic routers will support all match types.
-        - setWeight: 50
-        - pause: {}
-        - setWeight: 60
-        - pause: { duration: 10 }
-        - setWeight: 80
-        - pause: { duration: 10 }      
+      - setWeight: 50
+      - setHeaderRoute:
+          name: "set-header-1"
+          match:
+            - headerName: Custom-Header1
+              headerValue:
+                prefix: v2
+      - pause: {}
+      - setHeaderRoute: 
+          name: "set-header-1"
   template:
     metadata:
       labels:
-        app: simpleapi-dev # has to match .spec.selector.matchLabels        
+        app: simpleapi-prod # has to match .spec.selector.matchLabels        
     spec:
       containers:
         - name: simpleapi
-          image: niazovd/api:v2
+          image: niazovd/api:v4
           imagePullPolicy: Always
           ports:
             - containerPort: 80
           env: 
             - name: MESSAGE
-              value: "DEV: Hello SRP Devcon 2023"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: simpleapi-dev-canary-service
-  namespace: api
-spec:
-  type: ClusterIP
-  selector:
-    app: simpleapi-dev
-  ports:
-    - port: 80 #This port is the port which belongs to ClusterIP which will be exposed
-      targetPort: 80 #This port should match with the port application is targetting in this case: containerPort: 8002.
-      protocol: TCP
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: simpleapi-dev-stable-service
-  namespace: api
-spec:
-  type: ClusterIP
-  selector:
-    app: simpleapi-dev
-  ports:
-    - port: 80 #This port is the port which belongs to ClusterIP which will be exposed
-      targetPort: 80 #This port should match with the port application is targetting in this case: containerPort: 8002.
-      protocol: TCP
+              value: "Canary deployment!"
+            - name: SLEEP
+              value: "0"              
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: simpleapi-dev-vsvc
+  name: rollout-vsvc
   namespace: api
 spec:
-  hosts:
-    - 'simpleapi.dev'
   gateways:
     - gateway
+  hosts:
+    - "*"
   http:
-    - route:
-        - destination:
-            host: simpleapi-dev-stable-service.api.svc.cluster.local
-            port:
-              number: 80
+  - name: primary 
+    match:
+      - uri:
+          prefix: /
+        ignoreUriCase: true # Case-Insensitive          
+               # referenced in canary.trafficRouting.istio.virtualService.routes
+    route:
+    - destination:
+        host: simpleapi-prod-stable-service # referenced in canary.stableService
+      weight: 100
+    - destination:
+        host: simpleapi-prod-canary-service # referenced in canary.canaryService
+      weight: 0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simpleapi-prod-stable-service
+  namespace: api
+spec:
+  type: ClusterIP
+  selector:
+    app: simpleapi-prod
+  ports:
+    - port: 80 #This port is the port which belongs to ClusterIP which will be exposed
+      targetPort: 80
+      protocol: TCP
+      name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simpleapi-prod-canary-service
+  namespace: api
+spec:
+  type: ClusterIP
+  selector:
+    app: simpleapi-prod
+  ports:
+    - port: 80 #This port is the port which belongs to ClusterIP which will be exposed
+      targetPort: 80
+      protocol: TCP    
+      name: http  
