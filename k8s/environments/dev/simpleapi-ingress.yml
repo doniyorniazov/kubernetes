@@ -1,0 +1,127 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simpleapi
+  namespace: api
+  labels:
+    app: simpleapi
+spec:
+  selector:
+    matchLabels:
+      app: simpleapi
+  revisionHistoryLimit: 1
+  template:
+    metadata:
+      labels:
+        app: simpleapi # has to match .spec.selector.matchLabels
+    spec:
+      containers:
+        - name: simpleapi
+          image: niazovd/api:v4
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: MESSAGE
+              value: "Stable Deployment!"
+            - name: SLEEP
+              value: "0"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simpleapi-canary
+  namespace: api
+  labels:
+    app: simpleapi-canary
+spec:
+  selector:
+    matchLabels:
+      app: simpleapi-canary
+  revisionHistoryLimit: 1
+  template:
+    metadata:
+      labels:
+        app: simpleapi-canary # has to match .spec.selector.matchLabels
+    spec:
+      containers:
+        - name: simpleapi-canary
+          image: niazovd/api:v4
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: MESSAGE
+              value: "Canary Deployment!"
+            - name: SLEEP
+              value: "0"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simpleapi
+  namespace: api
+spec:
+  selector:
+    app: simpleapi
+  ports:
+    - port: 80 #This port is the port which belongs to ClusterIP which will be exposed
+      targetPort: 80 #This port should match with the port application is targetting in this case: containerPort: 8002.
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simpleapi-canary
+  namespace: api
+spec:
+  selector:
+    app: simpleapi-canary
+  ports:
+    - port: 80 #This port is the port which belongs to ClusterIP which will be exposed
+      targetPort: 80 #This port should match with the port application is targetting in this case: containerPort: 8002.
+      protocol: TCP
+---
+#The Ingress rules, must reside in the namespace where the app that they configure reside in this case it's in apptest
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: simpleapi
+  namespace: api
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: api.20.219.235.7.nip.io
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: simpleapi
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: simpleapi-canary
+  namespace: api
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/canary: "true"
+    nginx.ingress.kubernetes.io/canary-by-header: version
+    nginx.ingress.kubernetes.io/canary-by-header-value: v1
+spec:
+  rules:
+    - host: api.20.219.235.7.nip.io
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: simpleapi-canary
+                port:
+                  number: 80
