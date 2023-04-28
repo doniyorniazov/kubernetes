@@ -47,7 +47,7 @@ spec:
             - containerPort: 80
           env:
             - name: MESSAGE
-              value: "Stable Deployment!"
+              value: "Canary Deployment!"
             - name: SLEEP
               value: "0"
 ---
