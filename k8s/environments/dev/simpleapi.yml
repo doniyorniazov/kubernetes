@@ -9,35 +9,35 @@ spec:
   selector:
     matchLabels:
       app: simpleapi-prod # has to match .spec.template.metadata.labels
-  revisionHistoryLimit: 1 
+  revisionHistoryLimit: 1
   #replicas: 4
   strategy:
     canary:
-      stableService: simpleapi-prod-stable-service    #required
-      canaryService: simpleapi-prod-canary-service    #required
+      stableService: simpleapi-prod-stable-service #required
+      canaryService: simpleapi-prod-canary-service #required
       trafficRouting:
-        managedRoutes: 
-          - name: set-header-1
+        managedRoutes:
+          - name: set-version
         istio:
-         virtualService:
-           name: rollout-vsvc
-           routes:
-           - primary                                 # optional if there is a single route in VirtualService, required otherwise
+          virtualService:
+            name: rollout-vsvc
+            routes:
+              - primary # optional if there is a single route in VirtualService, required otherwise
       steps:
-      - setWeight: 50
-      - setHeaderRoute:
-          name: "set-header-1"
-          match:
-            - headerName: Custom-Header1
-              headerValue:
-                prefix: v2
-      - pause: {}
-      - setHeaderRoute: 
-          name: "set-header-1"
+        - setWeight: 50
+        - setHeaderRoute:
+            name: "set-version"
+            match:
+              - headerName: version
+                headerValue:
+                  prefix: v2
+        - pause: {}
+        - setHeaderRoute:
+            name: "set-version"
   template:
     metadata:
       labels:
-        app: simpleapi-prod # has to match .spec.selector.matchLabels        
+        app: simpleapi-prod # has to match .spec.selector.matchLabels
     spec:
       containers:
         - name: simpleapi
@@ -45,11 +45,11 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 80
-          env: 
+          env:
             - name: MESSAGE
-              value: "Canary deployment!"
+              value: "Stable deployment!"
             - name: SLEEP
-              value: "0"              
+              value: "0"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -62,19 +62,20 @@ spec:
   hosts:
     - "*"
   http:
-  - name: primary 
-    match:
-      - uri:
-          prefix: /
-        ignoreUriCase: true # Case-Insensitive          
-               # referenced in canary.trafficRouting.istio.virtualService.routes
-    route:
-    - destination:
-        host: simpleapi-prod-stable-service # referenced in canary.stableService
-      weight: 100
-    - destination:
-        host: simpleapi-prod-canary-service # referenced in canary.canaryService
-      weight: 0
+    - name: primary
+      match:
+        - uri:
+            prefix: /
+          ignoreUriCase:
+            true # Case-Insensitive
+            # referenced in canary.trafficRouting.istio.virtualService.routes
+      route:
+        - destination:
+            host: simpleapi-prod-stable-service # referenced in canary.stableService
+          weight: 100
+        - destination:
+            host: simpleapi-prod-canary-service # referenced in canary.canaryService
+          weight: 0
 ---
 apiVersion: v1
 kind: Service
@@ -103,5 +104,5 @@ spec:
   ports:
     - port: 80 #This port is the port which belongs to ClusterIP which will be exposed
       targetPort: 80
-      protocol: TCP    
-      name: http  
+      protocol: TCP
+      name: http

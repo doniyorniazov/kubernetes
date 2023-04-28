@@ -15,23 +15,16 @@ spec:
     namespace: argocd
   syncPolicy:
     syncOptions:
-#      - RespectIgnoreDifferences=true
+      #- RespectIgnoreDifferences=true
       - CreateNamespace=true #automatically create namespace if it os not there
-      - ApplyOutOfSyncOnly=true #istio setting https://argoproj.github.io/argo-rollouts/features/traffic-management/istio/#integrating-with-gitops
+      #- ApplyOutOfSyncOnly=true #istio setting https://argoproj.github.io/argo-rollouts/features/traffic-management/istio/#integrating-with-gitops
     automated:
-      selfHeal: true #don't let manual kubectl apply
+      #selfHeal: true #don't let manual kubectl apply
       prune: true #deletes deployment if deployment file is removed
+    #retry:
+    # limit: 2
   ignoreDifferences: #istio setting https://argoproj.github.io/argo-rollouts/features/traffic-management/istio/#integrating-with-gitops
-  - group: networking.istio.io
-    kind: VirtualService
-    jsonPointers:
-    - /spec/http/0
-#  - group: argoproj.io/v1alpha1
-#    kind: Rollout
-#    jqPathExpressions:
-#    - .spec.strategy.canary    
-#  - group: "*"
-#   kind: "*"
-#    managedFieldsManagers:
-#    - rollouts-controller
-
+    - group: networking.istio.io
+      kind: VirtualService
+      jsonPointers:
+        - /spec/http/0
