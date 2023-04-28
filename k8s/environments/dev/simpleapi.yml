@@ -30,7 +30,7 @@ spec:
             match:
               - headerName: version
                 headerValue:
-                  prefix: v2
+                  prefix: v3
         - pause: {}
         - setHeaderRoute:
             name: "set-version"
@@ -47,7 +47,7 @@ spec:
             - containerPort: 80
           env:
             - name: MESSAGE
-              value: "NEW CANARY Deployment!"
+              value: "Canary Deployment!"
             - name: SLEEP
               value: "0"
 ---
@@ -66,9 +66,7 @@ spec:
       match:
         - uri:
             prefix: /
-          ignoreUriCase:
-            true # Case-Insensitive
-            # referenced in canary.trafficRouting.istio.virtualService.routes
+          ignoreUriCase: true # Case-Insensitive
       route:
         - destination:
             host: simpleapi-prod-stable-service # referenced in canary.stableService
