@@ -24,7 +24,8 @@ spec:
             routes:
               - primary # optional if there is a single route in VirtualService, required otherwise
       steps:
-        - setWeight: 50
+        - setCanaryScale:
+            weight: 50
         - setHeaderRoute:
             name: "set-version"
             match:
