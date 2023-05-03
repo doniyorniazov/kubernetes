@@ -1,0 +1,4 @@
+configMapGenerator:
+  - envs:
+      - .env
+    name: example-configmap-1

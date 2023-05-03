@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: simpleapi
-          image: hub.docker.com/doniyozov/api:v1
+          image: hub.docker.com/niazovd/api:v1
           ports:
             - name: http
               containerPort: 8002
