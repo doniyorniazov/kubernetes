@@ -7,7 +7,7 @@ on:
         description: 'Docker image tag'
         required: true
         default: '1.0.0'
-  
+
 jobs:
   build:
     name: Build & push docker image
@@ -16,18 +16,19 @@ jobs:
       IMG_NAME: niazovd/api
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # required for github-action-get-previous-tag
 
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0 # required for github-action-get-previous-tag    
-          
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v2
-      with:
-        context: ./api
-        push: ${{ env.IMG_NAME }}
-        tags: |
-          '${{ github.event.inputs.docker-tag }}'
-          latest
-        labels: '${{ github.event.inputs.docker-tag }}'
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./api
+          push: ${{ env.IMG_NAME }}
+          tags: |
+            '${{ github.event.inputs.docker-tag }}'
+            latest
+          labels: '${{ github.event.inputs.docker-tag }}'
+  docker:
+    uses: .githib/templates/docker.yml
