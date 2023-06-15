@@ -32,3 +32,9 @@ jobs:
           labels: '${{ github.event.inputs.docker-tag }}'
   docker:
     uses: .githib/templates/docker.yml
+    with:
+      image_Name: test-name
+      tag: $GITHUB_RUN_NUMBER
+    secrets:
+      registry-username: ${{secrets.REGISTRY-USERNAME}}
+      registry-password: ${{secrets.REGISTRY-PASSWORD}}
