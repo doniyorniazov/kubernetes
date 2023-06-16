@@ -8,6 +8,8 @@ on:
         type: string
       tag:
         type: string
+      test:
+        
     secrets:
       registry-username: 
         required: true
