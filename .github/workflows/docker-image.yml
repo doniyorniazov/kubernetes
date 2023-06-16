@@ -31,7 +31,7 @@ jobs:
             latest
           labels: '${{ github.event.inputs.docker-tag }}'
   docker:
-    uses: .githib/templates/docker.yml@main
+    uses: .githib/workflows/templates/docker.yml@main
     with:
       image_Name: test-name
       tag: $GITHUB_RUN_NUMBER
