@@ -10,6 +10,7 @@ spec:
     matchLabels:
       app: simpleapi
   revisionHistoryLimit: 1
+  replicas: 3
   template:
     metadata:
       labels:
@@ -23,7 +24,7 @@ spec:
             - containerPort: 80
           env:
             - name: MESSAGE
-              value: 'Stable Deployment!'
+              value: 'Hello SRP from Kubernetes'
             - name: SLEEP
               value: '0'
 ---
