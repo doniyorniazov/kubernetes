@@ -5,5 +5,5 @@ bases:
 namePrefix: dev-
 nameSuffix: -erp
 resources:
-  - image.yml
+  - api.yml
 # Running command to update

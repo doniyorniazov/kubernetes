@@ -3,6 +3,7 @@ kind: Kustomization
 bases:
   - ../../base
 namePrefix: prod-
+nameSuffix: -erp
 resources:
-  - image.yml
+  - api.yml
 # Running command to update kustomize build overlays/dev > overlays/prod/image.yml
