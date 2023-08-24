@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+  namespace: dev
+data:
+  Environment: 'test'
+  AllowCrossContextCommunication: 'true'
+  REPORTING_SERVICE_ENDPOINT: 'https://erp-reporting-test.eastus.cloudapp.azure.com'
+  JaegerLevel: 'Trace'
+  JaegerHostname: 'jaeger-agent.jaeger'
+  MaxExecutionTimeForServerOparationWarning: '15'
+  MaxExecutionTimeForServerOparationError: '20'
