@@ -1,0 +1,23 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: account-vsvc
+  namespace: dev
+spec:
+  hosts:
+    - 'dev.koblesystems.com'
+  gateways:
+    - gateway
+  http:
+    - name: primary
+      match:
+        - uri:
+            prefix: /account
+          ignoreUriCase: true #case-Insensitive
+      route:
+        - destination:
+            host: account-stable-service # referenced in canary.stableService
+          weight: 100
+        - destination:
+            host: account-canary-service # referenced in canary.canaryService
+          weight: 0
